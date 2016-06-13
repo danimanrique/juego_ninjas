@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="phaser.min.js"></script>
+        <script type="text/javascript" src="libreria/movninja.js"></script>        
+        <script type="text/javascript" src="libreria/Behavior_Ninja.js"></script>
+        <script type="text/javascript" src="libreria/princes.js"></script>
+        <script type="text/javascript" src="libreria/Behavior.js"></script>
+        <script type="text/javascript" src="libreria/Movimientos.js"></script>
+        <script type="text/javascript" src="libreria/Behavior_Mongoles.js"></script>
+
+    </head>
+
+
+
+    <body id='gameDiv'>
+  
+
+
+        <script type="text/javascript">
+
+            var game = new Phaser.Game(1920, 1056, Phaser.AUTO, 'gameDiv', {preload: preload, create: create, update: update});
+            var score = [0,0];
+            var scoreText1;
+            var equipo1;
+            var scoreText2;
+            var equipo2;
+            var shootKey;
+            var ninjaRojo;
+            var princes;
+             var ninjaAzul;
+             var wasd;
+
+            //--------------Mundooo----------------------------------------------
+            var map,capaCiudad,capaSuelo,capaColision,capaDecorado,capaPuerta;
+            var mundoBase=[4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 4065, 4065, 0, 0, 0, 4065, 0, 0, 0, 0, 4065, 4065, 0, 0, 0, 0, 4065, 0, 0, 0, 4065, 4065, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 0, 0, 4065, 4065, 4065, 4065, 4065, 0, 0, 4065, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 0, 0, 4065, 0, 0, 0, 4065, 0, 0, 4065, 0, 0, 0, 4065, 0, 0, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 4065, 0, 0, 4065, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 4065, 0, 0, 4065, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 0, 4065, 4065, 0, 0, 0, 4065, 4065, 4065, 4065, 4065, 0, 0, 4065, 4065, 4065, 4065, 4065, 0, 0, 0, 4065, 4065, 0, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 4065, 0, 0, 4065, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 4065, 0, 0, 4065, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 4065, 4066, 4066, 4065, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 4065, 4065, 4065, 4065, 0, 0, 4065,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 4065, 4065, 0, 0, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 0, 0, 0, 0, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 4065, 4065, 0, 0, 0, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 4065, 4065, 0, 0, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 0, 4065, 4065, 0, 0, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 4065, 4065, 0, 0, 4065, 4065, 4065, 4065, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 0, 0, 0, 0, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 0, 0, 4065, 0, 0,
+            0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            var mundo;
+            //----------------------------------------
+
+             var termino=0;
+            //var shootKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
+            
+//**********Mongoles********************
+			var mongoles = [];
+            var posicionesMongoles=[[7,3],[19,4],[10,11],[17,11],[4,20],[7,20],[11,20],[28,9],[31,9],[39,4],[42,11],[48,11],[42,20],[46,20],[50,20],[51,3]];
+      console.log(posicionesMongoles);
+			var size_mongoles = 16;
+//*************************************************
+
+//*************Ninjas*******************
+			var ninjas = [];
+			var size_ninjas = 2;
+//**************************************
+
+
+
+            function preload() {
+
+
+                game.load.tilemap('nivel', 'MongolMap.json', null, Phaser.Tilemap.TILED_JSON);
+
+                game.load.image('collitionTile', 'assets/collitionTile.png');
+                game.load.image('collitionTilePuerta', 'assets/collitionTilePuerta.png');
+                game.load.image('edificiosTiles', 'assets/edificiosTiles.PNG');
+                game.load.image('elementosCiudadSuelo', 'assets/elementosCiudadSuelo.png');
+                game.load.image('objetosAsiaticos1', 'assets/objetosAsiaticos1.png');
+                game.load.image('objetosAsiaticos2', 'assets/objetosAsiaticos2.png');
+                game.load.image('objetosAsiaticos3', 'assets/objetosAsiaticos3.png');
+                game.load.image('sueloPasto', 'assets/sueloPasto.png');
+                game.load.image('sueloTiles', 'assets/sueloTiles.png');
+
+                game.load.spritesheet('lucha', 'assets/peleasprite.png',260,220);
+                game.load.spritesheet('mongol', 'assets/mongolC.png',31,55);
+                game.load.spritesheet('mongolE', 'assets/mongol_escudoC.png',31,55);
+                game.load.spritesheet('mongolH', 'assets/mongol_hachaC.png',31,55);
+                game.load.spritesheet('ninjaAzul','assets/ninjaAzulDoble.png',32,64);
+                game.load.spritesheet('ninjaRojo','assets/ninjaRojoDoble.png',32,64);
+                game.load.spritesheet('princes','assets/Geisha_SnU.png');
+
+
+            }
+
+            function create() {
+
+                //  We're going to be using physics, so enable the Arcade Physics system
+                game.physics.startSystem(Phaser.Physics.ARCADE);
+
+                game.world.setBounds(0, 0, 1920, 1056);
+
+                map = game.add.tilemap('nivel');
+
+                map.addTilesetImage('collitionTile', 'collitionTile');
+                map.addTilesetImage('collitionTilePuerta', 'collitionTilePuerta');
+                map.addTilesetImage('edificiosTiles', 'edificiosTiles');
+                map.addTilesetImage('elementosCiudadSuelo', 'elementosCiudadSuelo');
+                map.addTilesetImage('objetosAsiaticos1', 'objetosAsiaticos1');
+                map.addTilesetImage('objetosAsiaticos2', 'objetosAsiaticos2');
+                map.addTilesetImage('objetosAsiaticos3', 'objetosAsiaticos3');
+              //  map.addTilesetImage('plantas', 'plantas');
+                map.addTilesetImage('sueloPasto', 'sueloPasto');
+                map.addTilesetImage('sueloTiles', 'sueloTiles');
+
+                map.setCollision(4065,true,"CapaColision",false);
+                map.setCollision(4066,true,"CapaColision",false);
+
+                capaSuelo = map.createLayer(0);
+                capaCiudad=map.createLayer(1);
+                capaDecorado=map.createLayer(2);
+                capaColision=map.createLayer("CapaColision");
+                capaPuerta=map.createLayer("CapaPuerta");
+                capaColision.visible=false;
+
+           /*     ninjaAzul = game.add.sprite(50, 650, 'ninjaAzulDoble');
+                game.physics.enable(ninjaAzul, Phaser.Physics.ARCADE);
+                ninjaAzul.body.collideWorldBounds = true;
+                ninjaAzul.body.allowGravity = false;
+                ninjaAzul.position.x=58*32;
+                ninjaAzul.position.y=29*32;
+                ninjaAzul.animations.add('movIzq',[0],7,false);
+                ninjaAzul.animations.add('movDer',[1],7,false);
+
+                ninjaRojo = game.add.sprite(50, 650, 'ninjaRojo');
+                game.physics.enable(ninjaRojo, Phaser.Physics.ARCADE);
+                ninjaRojo.body.collideWorldBounds = true;
+                ninjaRojo.body.allowGravity = false;
+                ninjaRojo.animations.add('movIzq',[0],7,false);
+                ninjaRojo.animations.add('movDer',[1],7,false);
+
+                ninjaRojo.position.x=32;
+                ninjaRojo.position.y=29*32;
+                princes = game.add.sprite(50, 650, 'princesa');
+                game.physics.enable(princes, Phaser.Physics.ARCADE);
+                princes.body.collideWorldBounds = true;
+                princes.body.allowGravity = false;
+                princes.animations.add('movIzq',[0],7,false);
+                princes.animations.add('movDer',[1],7,false);
+                princes.x=(30 * 32)+16;
+                princes.y=2*32;
+*/
+
+
+
+
+
+
+
+
+
+                princes = new princes(game, 29 * 32, 64, 'princes');
+
+//                game, posx, posy, key, frame,target,cursors
+                //ninjaRojo = new movninja(game, 58*32, 29*32, 'ninjaRojo',0);
+                ninjaRojo = new Behavior_Ninja(game, 58*32, 29*32, 'ninjaRojo',0);
+                equipo1 = 'rojo';
+
+                ninjaAzul = new movninja(game, 32, 29*32, 'ninjaAzul', 1);
+                //ninjaAzul = new Behavior_Ninja(game, 32, 29*32, 'ninjaAzul', 1);
+                equipo2 = 'azul';
+//
+//  game.add.sprite(200, 200, 'ninja');
+                // princes=game.add.sprite(200,200,'princesa');
+                //princes.scale.setTo(0.1, 0.1);
+
+//*************Ninjas*******************
+                ninjas.push(ninjaRojo);
+                ninjas.push(ninjaAzul);
+//*****************************************
+
+//llevar ambos ninjas no solo el ninja rojo--
+//*********************Mongoles******************************************************************
+                for (var i = 0; i < size_mongoles; i++) {
+                    posX = game.rnd.between(10, game.world.width - 20);
+                    posY = game.rnd.between(10, game.world.height - 20);
+                    mongol = new Behavior_Mongoles(game, posX, posY, ["mongol","mongolE","mongolH"], 3, null);//ver si es necesario el target
+                    mongoles.push(mongol);
+                }
+//***********************************************************************************************
+
+                
+
+
+
+                scoreText1= game.add.text(16, 10, equipo1+': 0', {fontSize: '32px', fill: '#000'});
+                scoreText2=game.add.text(16, 38, equipo2+': 0', {fontSize: '32px', fill: '#000'});
+                capaAtras=map.createLayer("CapaAtras");
+//                game.sound.setDecodedCallback([dis], start, this);
+
+            
+                //*************    revive Mongoles *************
+                game.time.events.loop(Phaser.Timer.SECOND * 15, reviveMongoles, this);
+                //*************    revive Mongoles *************
+            }
+            function update() {
+                
+                if(!termino){
+                //PARA COMPLETAR
+                //1) DISCRETIZAR EL MUNDO
+                   // discretizar();
+                // puede terminar
+                
+                
+                //MOVIMIENTOS NINJA:
+                 for (var i = 0; i < ninjas.length; i++) {                
+                    game.physics.arcade.collide(ninjas[i].sprite, capaColision);
+                  //  game.physics.arcade.overlap(ninjas[i].sprite,princes,gano(i) );
+                if(ninjas[i].nopelea)    
+                    ninjas[i].update();
+                }
+                princes.update();
+
+
+                //3) MOVIMIENTOS MONGOLES 
+//*******************Mongoles*****************************************
+				for (var i = 0; i < mongoles.length; i++) {
+                    game.physics.arcade.collide(mongoles[i].sprite, capaColision);
+
+                    mongoles[i].update();
+					} 
+//******************************************************************************
+                
+                scoreText1.text=equipo1+':'+score[0];
+                scoreText2.text=equipo2+':'+score[1];
+                }
+                else
+                {
+                    for (var i = 0; i < ninjas.length; i++) {
+                        ninjas[i].sprite.body.velocity=0;
+                        ninjas[i].sprite.animations.stop();
+                    }
+                    for (var i = 0; i < mongoles.length; i++) {
+                        mongoles[i].sprite.body.velocity=0;
+                        mongoles[i].sprite.animations.stop();
+                    }
+                }
+            }
+
+
+            function discretizar(){
+                mundo=mundoBase;
+
+                for (var i=0; i< ninjas.length;i++){
+                 var tileX=capaColision.getTileX(ninjas[i].sprite.x);
+                 var tileY=capaColision.getTileY(ninjas[i].sprite.y);
+                 mundo[tileY*60 + tileX]=100+ i;
+                 }
+
+                 for (var i=0; i< mongoles.length;i++){
+                     if(mongoles[i].nopeleo){
+                 var tileX=capaColision.getTileX(mongoles[i].sprite.x);
+                 var tileY=capaColision.getTileY(mongoles[i].sprite.y);
+                 mundo[tileY*60 + tileX]=200+ i;
+                     }
+                 }
+
+                var tileX=capaColision.getTileX(princes.sprite.x);
+                var tileY=capaColision.getTileY(princes.sprite.y);
+                mundo[tileY*60 + tileX]=1;
+               // console.log("TileX:" + tileX +  "/n TileY:" + tileY);
+                console.log(mundo);
+            }
+            
+            function reviveMongoles()
+            {
+              console.log("hola");
+              for(var i=0;i<mongoles.length;i++)
+              {
+                    mong = mongoles[i];
+                    if(!mong.sprite.alive)
+                    {
+                        posX = game.rnd.between(10, game.world.width - 20);
+                        posY = game.rnd.between(10, game.world.height - 20);
+                        
+                        mong.sprite.revive();
+                        mong.sprite.position.x=posX;
+                        mong.sprite.position.y=posY;
+                        mong.nopeleo=1;
+                    }
+                }
+                
+            }
+        </script>
+        </body>
+</html>
